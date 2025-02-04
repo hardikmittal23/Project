@@ -54,7 +54,7 @@ def add_user():
     
     try:
         cursor = connection.cursor()
-        cursor.execute('INSERT INTO users (name, email) VALUES (%s, %s, %d)', (name, email, password))
+        cursor.execute('INSERT INTO users (name, email, password) VALUES (%s, %s, %s)', (name, email, password))
         connection.commit()
     except mysql.connector.Error as err:
         flash(f"Error: {err}")
