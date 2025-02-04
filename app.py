@@ -27,7 +27,8 @@ def create_users_table(connection):
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE
+                email VARCHAR(255) NOT NULL UNIQUE,
+                password INT NOT NULL
             )
         ''')
         connection.commit()
@@ -44,6 +45,7 @@ def index():
 def add_user():
     name = request.form['name']
     email = request.form['email']
+    password = request.form['password']
     
     connection = get_db_connection()
     if connection is None:
@@ -52,7 +54,7 @@ def add_user():
     
     try:
         cursor = connection.cursor()
-        cursor.execute('INSERT INTO users (name, email) VALUES (%s, %s)', (name, email))
+        cursor.execute('INSERT INTO users (name, email) VALUES (%s, %s, %d)', (name, email, password))
         connection.commit()
     except mysql.connector.Error as err:
         flash(f"Error: {err}")
